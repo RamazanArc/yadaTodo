@@ -1,0 +1,52 @@
+.login-container {
+  padding: 20;
+  background-size: cover;
+  background-position: center;
+}
+
+.logo {
+  align-self: center;
+  margin-bottom: 20;
+}
+
+.title {
+  font-size: 24;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20;
+}
+
+.input-container {
+  margin-bottom: 10;
+}
+
+.input {
+  border-width: 1;
+  border-color: #ccc;
+  padding: 10;
+  border-radius: 5;
+}
+
+.error {
+  color: red;
+  font-size: 12;
+}
+
+.forgot-password {
+  color: #007aff;
+  text-align: right;
+  margin-bottom: 20;
+}
+
+.login-button {
+  background-color: #28a745;
+  color: white;
+  padding: 15;
+  border-radius: 5;
+}
+.register-button {
+  background-color: #28a745;
+  color: white;
+  padding: 15;
+  border-radius: 5;
+}

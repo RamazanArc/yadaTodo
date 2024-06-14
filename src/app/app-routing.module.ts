@@ -1,15 +1,19 @@
-import { NgModule } from '@angular/core'
-import { Routes } from '@angular/router'
-import { NativeScriptRouterModule } from '@nativescript/angular'
-
-import { ItemsComponent } from './item/items.component'
-import { ItemDetailComponent } from './item/item-detail.component'
+import { NgModule } from "@angular/core";
+import { NativeScriptRouterModule } from "@nativescript/angular";
+import { Routes } from "@angular/router";
+import { LoginComponent } from "./login/login.component";
+import { RegisterComponent } from "./register/register.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/items', pathMatch: 'full' },
-  { path: 'items', component: ItemsComponent },
-  { path: 'item/:id', component: ItemDetailComponent },
-]
+  { path: "", redirectTo: "/login", pathMatch: "full" },
+  { path: "login", component: LoginComponent },
+  {
+    path: "dashboard",
+    component: DashboardComponent,
+  },
+  { path: "register", component: RegisterComponent },
+];
 
 @NgModule({
   imports: [NativeScriptRouterModule.forRoot(routes)],

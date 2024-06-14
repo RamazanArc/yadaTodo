@@ -1,16 +1,35 @@
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core'
-import { NativeScriptModule } from '@nativescript/angular'
-
-import { AppRoutingModule } from './app-routing.module'
-import { AppComponent } from './app.component'
-import { ItemsComponent } from './item/items.component'
-import { ItemDetailComponent } from './item/item-detail.component'
+import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
+import {
+  NativeScriptFormsModule,
+  NativeScriptModule,
+} from "@nativescript/angular";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { LoginComponent } from "./login/login.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
+import { RegisterComponent } from "./register/register.component";
+import { HttpClientModule } from "@angular/common/http";
+import { DropDownModule } from "nativescript-drop-down/angular";
 
 @NgModule({
-  bootstrap: [AppComponent],
-  imports: [NativeScriptModule, AppRoutingModule],
-  declarations: [AppComponent, ItemsComponent, ItemDetailComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    DashboardComponent,
+  ],
+  imports: [
+    NativeScriptModule,
+    AppRoutingModule,
+    NativeScriptFormsModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    DropDownModule,
+  ],
   providers: [],
+  bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA],
 })
 export class AppModule {}

@@ -1,0 +1,45 @@
+<StackLayout class="dashboard-container">
+  <Label text="Görev Listesi" class="title"></Label>
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <StackLayout class="input-container">
+      <TextField
+        formControlName="title"
+        hint="Görev Başlığı"
+        class="input"
+      ></TextField>
+      <Label
+        *ngIf="taskForm.get('title').invalid && taskForm.get('title').touched"
+        text="Görev başlığı zorunludur"
+        class="error"
+      ></Label>
+    </StackLayout>
+
+    <StackLayout class="input-container">
+      <Label text="Durum" class="input-label"></Label>
+      <DropDown
+        formControlName="status"
+        [items]="statusList"
+        class="input"
+      ></DropDown>
+      <Label
+        *ngIf="taskForm.get('status').invalid && taskForm.get('status').touched"
+        text="Görev durumu zorunludur"
+        class="error"
+      ></Label>
+    </StackLayout>
+
+    <Button
+      text="Görevi Kaydet"
+      class="submit-button"
+      [isEnabled]="taskForm.valid"
+      (tap)="onSubmit()"
+    ></Button>
+  </form>
+
+  <Label text="Görevler" class="title"></Label>
+  <StackLayout *ngFor="let task of tasks">
+    <Label [text]="'Başlık: ' + task.title" class="task-item"></Label>
+    <Label [text]="'Durum: ' + task.status" class="task-item"></Label>
+    <Button text="Düzenle" (tap)="editTask(task)"></Button>
+  </StackLayout>
+</StackLayout>
