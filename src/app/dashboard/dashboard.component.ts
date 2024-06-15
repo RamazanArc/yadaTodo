@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
   ) {
     this.taskForm = this.fb.group({
       title: ["", Validators.required],
-      status: [0, Validators.required], // Using index for DropDown
+      status: [0, Validators.required],
     });
     this.vibrator = new Vibrate();
   }
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
   loadTasks() {
     this.http.get<any[]>(this.apiUrl).subscribe(
       (tasks) => {
-        this.tasks = tasks.slice(0, 3); // Limiting to 3 tasks for demo
+        this.tasks = tasks.slice(0, 3);
       },
       (error) => {
         console.error("Error loading tasks", error);
@@ -51,14 +51,14 @@ export class DashboardComponent implements OnInit {
       const newTask = {
         title: this.taskForm.value.title,
         status: this.statusList[this.taskForm.value.status],
-        completed: false, // Default value assuming task is not completed initially
+        completed: false,
       };
 
       this.http.post<any>(this.apiUrl, newTask).subscribe(
         (task) => {
-          this.tasks.unshift(task); // Add new task to the beginning of the array
-          this.taskForm.reset(); // Reset form after successful submission
-          this.vibrator.vibrate(1000); // Vibrate for 1 second
+          this.tasks.unshift(task);
+          this.taskForm.reset();
+          this.vibrator.vibrate(1000);
         },
         (error) => {
           console.error("Error adding task", error);
@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
     const updatedTask = {
       title: this.taskForm.value.title,
       status: this.statusList[this.taskForm.value.status],
-      completed: task.completed, // Preserve the current completed status
+      completed: task.completed,
     };
 
     this.http.put<any>(updateUrl, updatedTask).subscribe(
@@ -101,8 +101,8 @@ export class DashboardComponent implements OnInit {
         const index = this.tasks.findIndex((t) => t.id === task.id);
         if (index !== -1) {
           this.tasks[index] = response;
-          this.taskForm.reset(); // Reset form after successful update
-          this.vibrator.vibrate(1000); // Vibrate for 1 second
+          this.taskForm.reset();
+          this.vibrator.vibrate(1000); // 1 saniye titret
         }
       },
       (error) => {
