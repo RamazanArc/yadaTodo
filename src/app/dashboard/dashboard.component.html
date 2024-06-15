@@ -1,4 +1,8 @@
 <StackLayout class="dashboard-container">
+  <!-- Kullanıcı Bilgisi ve Çıkış Butonu -->
+  <Label [text]="'Hoşgeldin, ' + username" class="welcome-message"></Label>
+  <Button text="Çıkış Yap" class="logout-button" (tap)="logout()"></Button>
+
   <!-- Görev Ekleme Formu -->
   <Label text="Görev Ekle" class="title"></Label>
   <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
@@ -41,14 +45,14 @@
   <Label text="Görevler" class="title"></Label>
   <StackLayout *ngFor="let task of tasks" class="task-item-container">
     <Label [text]="'Başlık: ' + task.title" class="task-item"></Label>
-    <Label
-      [text]="
-        task.completed === 'true' ? 'Durum: tamamlandı' : 'Durum: devam ediyor'
-      "
-      class="task-item"
-    ></Label>
+    <Label [text]="'Durum: ' + task.status" class="task-item"></Label>
 
     <Button text="Düzenle" (tap)="editTask(task)" class="edit-button"></Button>
     <Button text="Sil" (tap)="deleteTask(task)" class="delete-button"></Button>
+    <Button
+      text="Güncelle"
+      (tap)="updateTask(task)"
+      class="update-button"
+    ></Button>
   </StackLayout>
 </StackLayout>

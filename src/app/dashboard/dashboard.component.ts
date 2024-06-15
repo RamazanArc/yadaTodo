@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
+import { ApplicationSettings } from "@nativescript/core";
+import { Router } from "@angular/router";
+import { Vibrate } from "nativescript-vibrate";
 
 @Component({
   selector: "ns-dashboard",
@@ -12,22 +15,30 @@ export class DashboardComponent implements OnInit {
   tasks: any[] = [];
   statusList: string[] = ["Tamamlandı", "Devam Ediyor", "İptal Edildi"];
   apiUrl: string = "https://jsonplaceholder.typicode.com/todos";
+  username: string = "";
+  vibrator: Vibrate;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {
     this.taskForm = this.fb.group({
       title: ["", Validators.required],
       status: [0, Validators.required], // Using index for DropDown
     });
+    this.vibrator = new Vibrate();
   }
 
   ngOnInit() {
+    this.username = ApplicationSettings.getString("username", "");
     this.loadTasks();
   }
 
   loadTasks() {
     this.http.get<any[]>(this.apiUrl).subscribe(
       (tasks) => {
-        this.tasks = tasks.slice(0, 3); // Limiting to 5 tasks for demo
+        this.tasks = tasks.slice(0, 3); // Limiting to 3 tasks for demo
       },
       (error) => {
         console.error("Error loading tasks", error);
@@ -37,28 +48,22 @@ export class DashboardComponent implements OnInit {
 
   onSubmit() {
     if (this.taskForm.valid) {
-      if (
-        this.taskForm.value.status >= 0 &&
-        this.taskForm.value.status < this.statusList.length
-      ) {
-        const newTask = {
-          title: this.taskForm.value.title,
-          status: this.statusList[this.taskForm.value.status],
-          completed: false, // Default value assuming task is not completed initially
-        };
+      const newTask = {
+        title: this.taskForm.value.title,
+        status: this.statusList[this.taskForm.value.status],
+        completed: false, // Default value assuming task is not completed initially
+      };
 
-        this.http.post<any>(this.apiUrl, newTask).subscribe(
-          (task) => {
-            this.tasks.unshift(task); // Add new task to the beginning of the array
-            this.taskForm.reset(); // Reset form after successful submission
-          },
-          (error) => {
-            console.error("Error adding task", error);
-          }
-        );
-      } else {
-        console.error("Invalid status index selected");
-      }
+      this.http.post<any>(this.apiUrl, newTask).subscribe(
+        (task) => {
+          this.tasks.unshift(task); // Add new task to the beginning of the array
+          this.taskForm.reset(); // Reset form after successful submission
+          this.vibrator.vibrate(1000); // Vibrate for 1 second
+        },
+        (error) => {
+          console.error("Error adding task", error);
+        }
+      );
     }
   }
 
@@ -97,11 +102,18 @@ export class DashboardComponent implements OnInit {
         if (index !== -1) {
           this.tasks[index] = response;
           this.taskForm.reset(); // Reset form after successful update
+          this.vibrator.vibrate(1000); // Vibrate for 1 second
         }
       },
       (error) => {
         console.error("Error updating task", error);
       }
     );
+  }
+
+  logout() {
+    ApplicationSettings.remove("token");
+    ApplicationSettings.remove("username");
+    this.router.navigate(["/login"]);
   }
 }

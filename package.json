@@ -19,6 +19,7 @@
     "nativescript-drop-down": "^6.0.2",
     "nativescript-localstorage": "^2.0.2",
     "nativescript-secure-storage": "^2.6.2",
+    "nativescript-vibrate": "^4.0.1",
     "rxjs": "~7.8.0",
     "tns-core-modules": "^6.5.27",
     "zone.js": "~0.14.0"

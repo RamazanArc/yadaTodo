@@ -33,7 +33,7 @@ export class LoginComponent {
       if (registeredPassword && registeredPassword === password) {
         console.log("Login successful");
 
-        // Simulate token generation and save to local storage
+        // Token
         const token = "your-obtained-token";
         ApplicationSettings.setString("token", token);
 

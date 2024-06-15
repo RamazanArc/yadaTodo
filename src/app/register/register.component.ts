@@ -29,9 +29,10 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       const { username, password } = this.registerForm.value;
 
-      // Save username and password to local storage
+      // Kullanıcı adını ve şifreyi localstorage a kaydetme.
       ApplicationSettings.setString(username, password);
       console.log("User registered successfully");
+      console.log("Username: ", username);
 
       this.router.navigate(["/login"]);
     } else {
