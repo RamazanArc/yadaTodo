@@ -1,5 +1,6 @@
 <StackLayout class="dashboard-container">
-  <Label text="Görev Listesi" class="title"></Label>
+  <!-- Görev Ekleme Formu -->
+  <Label text="Görev Ekle" class="title"></Label>
   <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
     <StackLayout class="input-container">
       <TextField
@@ -36,10 +37,18 @@
     ></Button>
   </form>
 
+  <!-- Görev Listesi -->
   <Label text="Görevler" class="title"></Label>
-  <StackLayout *ngFor="let task of tasks">
+  <StackLayout *ngFor="let task of tasks" class="task-item-container">
     <Label [text]="'Başlık: ' + task.title" class="task-item"></Label>
-    <Label [text]="'Durum: ' + task.status" class="task-item"></Label>
-    <Button text="Düzenle" (tap)="editTask(task)"></Button>
+    <Label
+      [text]="
+        task.completed === 'true' ? 'Durum: tamamlandı' : 'Durum: devam ediyor'
+      "
+      class="task-item"
+    ></Label>
+
+    <Button text="Düzenle" (tap)="editTask(task)" class="edit-button"></Button>
+    <Button text="Sil" (tap)="deleteTask(task)" class="delete-button"></Button>
   </StackLayout>
 </StackLayout>

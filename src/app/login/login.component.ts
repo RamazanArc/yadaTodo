@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-// import * as localStorage from "nativescript-localstorage";
+import { ApplicationSettings } from "@nativescript/core";
 
 @Component({
   selector: "app-login",
@@ -28,26 +28,25 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
-      console.log({ username, password });
+      const registeredPassword = ApplicationSettings.getString(username);
 
-      //   // Save username and password to local storage
-      //   localStorage.setItem("username", username);
-      //   localStorage.setItem("password", password);
+      if (registeredPassword && registeredPassword === password) {
+        console.log("Login successful");
 
-      //   // Simulate token generation and save to local storage
-      //   const token = "your-obtained-token";
-      //   localStorage.setItem("token", token);
+        // Simulate token generation and save to local storage
+        const token = "your-obtained-token";
+        ApplicationSettings.setString("token", token);
 
-      this.router.navigate(["/dashboard"]);
+        this.router.navigate(["/dashboard"]);
+      } else {
+        console.log("User not registered or invalid password");
+        alert("Kullanıcı kayıtlı değil veya şifre yanlış.");
+      }
     } else {
       console.log("Form is invalid");
     }
   }
 
-  onForgotPassword() {
-    console.log("Forgot password clicked");
-    // Implement forgot password logic here
-  }
   onRegister() {
     this.router.navigate(["/register"]);
   }

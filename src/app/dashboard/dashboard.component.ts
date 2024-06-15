@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
   loadTasks() {
     this.http.get<any[]>(this.apiUrl).subscribe(
       (tasks) => {
-        this.tasks = tasks.slice(0, 3); // Limiting to 10 tasks for demo
+        this.tasks = tasks.slice(0, 3); // Limiting to 5 tasks for demo
       },
       (error) => {
         console.error("Error loading tasks", error);
@@ -36,20 +36,30 @@ export class DashboardComponent implements OnInit {
   }
 
   onSubmit() {
-    const newTask = {
-      title: this.taskForm.value.title,
-      status: this.statusList[this.taskForm.value.status], // Convert index to status
-    };
+    if (this.taskForm.valid) {
+      if (
+        this.taskForm.value.status >= 0 &&
+        this.taskForm.value.status < this.statusList.length
+      ) {
+        const newTask = {
+          title: this.taskForm.value.title,
+          status: this.statusList[this.taskForm.value.status],
+          completed: false, // Default value assuming task is not completed initially
+        };
 
-    this.http.post(this.apiUrl, newTask).subscribe(
-      (task) => {
-        this.tasks.push(task);
-        this.taskForm.reset();
-      },
-      (error) => {
-        console.error("Error adding task", error);
+        this.http.post<any>(this.apiUrl, newTask).subscribe(
+          (task) => {
+            this.tasks.unshift(task); // Add new task to the beginning of the array
+            this.taskForm.reset(); // Reset form after successful submission
+          },
+          (error) => {
+            console.error("Error adding task", error);
+          }
+        );
+      } else {
+        console.error("Invalid status index selected");
       }
-    );
+    }
   }
 
   editTask(task) {
@@ -57,5 +67,41 @@ export class DashboardComponent implements OnInit {
       title: task.title,
       status: this.statusList.indexOf(task.status),
     });
+  }
+
+  deleteTask(task) {
+    const deleteUrl = `${this.apiUrl}/${task.id}`;
+
+    this.http.delete(deleteUrl).subscribe(
+      () => {
+        this.tasks = this.tasks.filter((t) => t.id !== task.id);
+      },
+      (error) => {
+        console.error("Error deleting task", error);
+      }
+    );
+  }
+
+  updateTask(task) {
+    const updateUrl = `${this.apiUrl}/${task.id}`;
+
+    const updatedTask = {
+      title: this.taskForm.value.title,
+      status: this.statusList[this.taskForm.value.status],
+      completed: task.completed, // Preserve the current completed status
+    };
+
+    this.http.put<any>(updateUrl, updatedTask).subscribe(
+      (response) => {
+        const index = this.tasks.findIndex((t) => t.id === task.id);
+        if (index !== -1) {
+          this.tasks[index] = response;
+          this.taskForm.reset(); // Reset form after successful update
+        }
+      },
+      (error) => {
+        console.error("Error updating task", error);
+      }
+    );
   }
 }

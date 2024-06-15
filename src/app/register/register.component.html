@@ -1,17 +1,17 @@
-<StackLayout class="login-container">
-  <Image src="~/assets/yada.png" class="logo" width="200" height="200"></Image>
-  <Label text="Görev App" class="title"></Label>
+<StackLayout class="register-container">
+  <Label text="Kayıt Ol" class="title"></Label>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <StackLayout class="input-container">
       <TextField
         formControlName="username"
-        hint="Username"
+        hint="Kullanıcı Adı"
         class="input"
       ></TextField>
       <Label
         *ngIf="
-          loginForm.get('username').invalid && loginForm.get('username').touched
+          registerForm.get('username').invalid &&
+          registerForm.get('username').touched
         "
         text="Doldurulması zorunlu alan"
         class="error"
@@ -21,13 +21,14 @@
     <StackLayout class="input-container">
       <TextField
         formControlName="password"
-        hint="Password"
+        hint="Şifre"
         secure="true"
         class="input"
       ></TextField>
       <Label
         *ngIf="
-          loginForm.get('password').invalid && loginForm.get('password').touched
+          registerForm.get('password').invalid &&
+          registerForm.get('password').touched
         "
         text="Doldurulması zorunlu alan (Min: 5, Max: 10)"
         class="error"
@@ -35,15 +36,15 @@
     </StackLayout>
 
     <Button
-      text="Giriş Yap"
-      class="login-button"
-      [isEnabled]="loginForm.valid"
+      text="Kayıt Ol"
+      class="register-button"
+      [isEnabled]="registerForm.valid"
       (tap)="onSubmit()"
     ></Button>
     <Button
-      text="Kayıt Ol"
-      class="register-button"
-      (tap)="onRegister()"
+      text="Giriş Yap"
+      class="login-button"
+      (tap)="router.navigate(['/login'])"
     ></Button>
   </form>
 </StackLayout>

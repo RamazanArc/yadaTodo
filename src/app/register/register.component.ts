@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-// import * as localStorage from "nativescript-localstorage";
+import { ApplicationSettings } from "@nativescript/core";
 
 @Component({
   selector: "app-register",
@@ -9,10 +9,10 @@ import { Router } from "@angular/router";
   styleUrls: ["./register.component.css"],
 })
 export class RegisterComponent {
-  loginForm: FormGroup;
+  registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.loginForm = this.fb.group({
+  constructor(private fb: FormBuilder, public router: Router) {
+    this.registerForm = this.fb.group({
       username: ["", Validators.required],
       password: [
         "",
@@ -26,29 +26,16 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-      console.log({ username, password });
+    if (this.registerForm.valid) {
+      const { username, password } = this.registerForm.value;
 
-      //   // Save username and password to local storage
-      //   localStorage.setItem("username", username);
-      //   localStorage.setItem("password", password);
+      // Save username and password to local storage
+      ApplicationSettings.setString(username, password);
+      console.log("User registered successfully");
 
-      //   // Simulate token generation and save to local storage
-      //   const token = "your-obtained-token";
-      //   localStorage.setItem("token", token);
-
-      this.router.navigate(["/dashboard"]);
+      this.router.navigate(["/login"]);
     } else {
       console.log("Form is invalid");
     }
-  }
-
-  onForgotPassword() {
-    console.log("Forgot password clicked");
-    // Implement forgot password logic here
-  }
-  onRegister() {
-    this.router.navigate(["/register"]);
   }
 }
